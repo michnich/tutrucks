@@ -8,7 +8,7 @@
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="truck" class="edu.temple.tutrucks.Truck" fetch="select">
+        <many-to-one name="truck" class="edu.temple.tutrucks.Truck" lazy="false" fetch="select">
             <column name="truck_id" />
         </many-to-one>
         <property name="menuName" type="string">
@@ -17,7 +17,7 @@
         <property name="description" type="string">
             <column name="description" length="1023" />
         </property>
-        <set name="items" table="item" inverse="true" lazy="true" fetch="select">
+        <set name="items" table="item" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="menu_id" />
             </key>

@@ -47,6 +47,7 @@ input
 
 .textbox{
 	width: 50%;
+        color: black;
 }
 .search{
 	width: 25%;
@@ -56,6 +57,20 @@ input
 
 .login{
 	color: black;
+}
+
+.ui-autocomplete {
+    font-size:small;
+    text-align:left;
+    overflow:hidden;
+    width: 50%;
+}
+
+.ac_subtext {
+    float:right;
+    color:gray;
+    opacity:0.6;
+    font-size:xx-small;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
