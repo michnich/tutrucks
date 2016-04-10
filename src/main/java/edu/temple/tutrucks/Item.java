@@ -171,6 +171,38 @@ public class Item implements java.io.Serializable, Reviewable, Taggable, Searcha
         return results;
     }
 
+    @Override
+    public int getScore() {
+        if (itemReviews.isEmpty())
+            return 0;
+        double score = 0.0;
+        for (ItemReview ir : itemReviews) {
+            score += (double)ir.getReviewStars();
+        }
+        score /= (double)itemReviews.size();
+        return (int) Math.round(score);
+    }
+
+    @Override
+    public List<Review> loadReviews(int start, int numReviews) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        Query q = session.createQuery(
+                "from ItemReview where reviewed.id=" + this.id + " order by reviewDate desc"
+        );
+        q.setFirstResult(start);
+        q.setMaxResults(numReviews);
+        List l = q.list();
+        List<Review> retval = new ArrayList<>();
+        List<ItemReview> nirList = new ArrayList<>();
+        for (Object o : l) {
+            retval.add((Review)o);
+            nirList.add((ItemReview)o);
+        }
+        this.setItemReviews(nirList);
+        return retval;
+    }
+
 }
 
 

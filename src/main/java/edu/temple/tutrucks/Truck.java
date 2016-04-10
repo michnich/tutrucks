@@ -220,6 +220,49 @@ public class Truck implements java.io.Serializable, Reviewable, Taggable, Search
         session.close();
         return retval;
     }
+    
+    public static Truck getTruckByID(int id) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        Query q = session.createQuery(
+                "from Truck where id='" + id + "'"
+        );
+        Truck retval = (Truck) q.uniqueResult();
+        session.close();
+        return retval;
+    }
+    
+    @Override
+    public int getScore() {
+        if (truckReviews.isEmpty())
+            return 0;
+        double score = 0.0;
+        for (TruckReview tr : truckReviews) {
+            score += (double)tr.getReviewStars();
+        }
+        score /= (double)truckReviews.size();
+        return (int) Math.round(score);
+    }
+
+    @Override
+    public List<Review> loadReviews(int start, int numReviews) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        Query q = session.createQuery(
+                "from TruckReview where reviewed.id=" + this.id + " order by reviewDate desc"
+        );
+        q.setFirstResult(start);
+        q.setMaxResults(numReviews);
+        List l = q.list();
+        List<Review> retval = new ArrayList<>();
+        List<TruckReview> ntrList = new ArrayList<>();
+        for (Object o : l) {
+            retval.add((Review)o);
+            ntrList.add((TruckReview)o);
+        }
+        this.setTruckReviews(ntrList);
+        return retval;
+    }
 
 }
 
