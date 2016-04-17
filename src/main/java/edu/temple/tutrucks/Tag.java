@@ -157,6 +157,17 @@ public class Tag implements java.io.Serializable, java.lang.Comparable, Searchab
         for (Searchable s : Searchable.SearchOrganizer.organize(l, terms)) results.add((Tag)s);
         return results;
     }
+    
+    public static Tag findTag (String name) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        Query q = session.createQuery(
+                "from Tag where tagName = " + name + "'"
+        );
+        Tag foundTag = (Tag) q.uniqueResult();
+        session.close();
+        return foundTag;
+    }
 
 }
 
