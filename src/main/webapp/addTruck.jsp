@@ -1,13 +1,13 @@
-<%@ include file="header.html"%>
+<%@ include file="header.jsp"%>
 <div class="container">
     <h1>Add a new truck</h1>
-    <form>
+    <form method="post" action="truckInsert">
         <fieldset class="form-group">
             <div class="col-sm-4">
                 <label for="truckName">Truck Name</label>
             </div>
             <div class="col-sm-8">
-                <input type="text" placeholder="Name" class="form-control" id="truckName">
+                <input type="text" placeholder="Name" class="form-control" name="truckName">
             </div>
         </fieldset>
         <fieldset class="form-group">
@@ -15,32 +15,22 @@
                 <label for="location">Truck Location</label>
             </div>
             <div class="col-sm-4">
-                <input type="text" placeholder="Latitude" class="form-control" id="latitude">
+                <input type="text" placeholder="Latitude" class="form-control" name="latitude">
             </div>
             <div class="col-sm-4">
-                <input type="text" placeholder="Longitude" class="form-control" id="longitude">
+                <input type="text" placeholder="Longitude" class="form-control" name="longitude">
             </div>
         </fieldset>
         <fieldset class="form-group">
             <div class="col-sm-4">
                 <label for="location">Hours of Operation</label>
-                <small class="text-muted" style="display:block">Something something format</small>
+                <small class="text-muted" style="display:block">HH:MM:SS</small>
             </div>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="openTime" placeholder="Opening Time">
+                <input type="text" class="form-control" name="openTime" placeholder="Opening Time">
             </div>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="closeTime" placeholder="Closing Time">
-            </div>
-        </fieldset>
-        <!--NICK CAN WE DO AUTOCOMPLETE HERE??-->
-        <fieldset class="form-group">
-            <div class="col-sm-4">
-                <label for="location">Tags</label>
-                <small class="text-muted" style="display:block">Separate each tag with a comma or something</small>
-            </div>
-            <div class="col-sm-8">
-                <textarea id="tags" rows="4" cols="100"></textarea>
+                <input type="text" class="form-control" name="closeTime" placeholder="Closing Time">
             </div>
         </fieldset>
         <fieldset class="form-group formWrapper">
@@ -169,4 +159,4 @@
     </form>
 </div>
 <%@ include file="footer.html"%>
-<script src="addTruck.js"></script>
+<script src="cloneMenu.js"></script>

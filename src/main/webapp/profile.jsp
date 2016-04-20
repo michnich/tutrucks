@@ -1,4 +1,4 @@
-<%@ include file="header.html"%>
+<%@ include file="header.jsp"%>
 <div class="container profile">
     <div class="col-md-4">
         <img class = "avatar" src="<% //insert avatar pic %>">

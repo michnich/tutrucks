@@ -1,6 +1,9 @@
 <%@page import="java.util.List"%>
+<%@page import="java.util.Set"%>
 <%@page import="edu.temple.tutrucks.Truck"%>
-<%@ include file="header.html"%>
+<%@page import="edu.temple.tutrucks.Tag"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ include file="header.jsp"%>
 <div class="container">
     <form>
         <fieldset class="form-group form-inline">
@@ -28,13 +31,14 @@
 </div>
 <br><br>
 <div class="container">
-    <form>
+    <form  method="post" action="editTruck">
+        <input type="hidden" name="edittedTruck" value=<%out.print("'" + selected.getTruckName() + "'");%>>
         <fieldset class="form-group">
             <div class="col-sm-4">
                 <label for="truckName">Truck Name</label>
             </div>
             <div class="col-sm-8">
-                <input type="text" placeholder="Name" class="form-control" id="truckName" 
+                <input type="text" placeholder="Name" class="form-control" name="truckName" 
                        <%
                            if (submitted) {
                                out.println("value = '" + selected.getTruckName() + "'");
@@ -48,7 +52,7 @@
                 <label for="location">Truck Location</label>
             </div>
             <div class="col-sm-4">
-                <input type="text" placeholder="Latitude" class="form-control" id="latitude"
+                <input type="text" placeholder="Latitude" class="form-control" name="latitude"
                        <%
                            if (submitted) {
                                out.println("value = '" + selected.getLatitude() + "'");
@@ -57,7 +61,7 @@
                        >
             </div>
             <div class="col-sm-4">
-                <input type="text" placeholder="Longitude" class="form-control" id="longitude"
+                <input type="text" placeholder="Longitude" class="form-control" name="longitude"
                        <%
                            if (submitted) {
                                out.println("value = '" + selected.getLongitude() + "'");
@@ -72,7 +76,7 @@
                 <small class="text-muted" style="display:block">Something something format</small>
             </div>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="openTime" placeholder="Opening Time"
+                <input type="text" class="form-control" name="openTime" placeholder="Opening Time"
                        <%
                            if (submitted) {
                                out.println("value = '" + selected.getOpeningTime().toString() + "'");
@@ -81,20 +85,15 @@
                        >
             </div>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="closeTime" placeholder="Closing Time" <%
+                <input type="text" class="form-control" name="closeTime" placeholder="Closing Time" <%
                     if (submitted) {
                         out.println("value = '" + selected.getClosingTime() + "'");
                     }
                        %>
                        >
-            </div>
+            </div>                      
         </fieldset>
-        <button type="submit" class="btn btn-primary" name="save">Save</button>
-        <%
-            if (request.getParameter("save") != null) {
-                //do some database updating shit
-            }
-        %>
+        <button type="submit" class="btn btn-primary">Save</button>
     </form>
 </div>
 <%@ include file="footer.html"%>

@@ -1,6 +1,9 @@
-<%@ include file="header.html"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <%@ page import="edu.temple.tutrucks.*" %>
 <%@ page import="java.util.List, java.util.Set,java.util.Locale,java.text.NumberFormat"%>
+<%@page import="edu.temple.tutrucks.User"%>
+<%@ include file="header.jsp"%>
 <style>
     .panel-heading {
         background-color: black;
@@ -98,7 +101,6 @@
                 %>
             </h5>
         </div>
-
         <div class="panel-body">
             <div class ="container">
                 <%

@@ -1,6 +1,7 @@
 <%@page import="java.util.List"%>
 <%@page import="edu.temple.tutrucks.Truck"%>
-<%@ include file="header.html"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ include file="header.jsp"%>
 <div class="container">
     <form>
         <fieldset class="form-group form-inline">
