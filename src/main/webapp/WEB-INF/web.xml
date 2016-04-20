@@ -33,4 +33,29 @@
         <url-pattern>/login</url-pattern>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>TruckInsertServlet</servlet-name>
+        <servlet-class>edu.temple.controller.TruckInsertServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TruckInsertServlet</servlet-name>
+        <url-pattern>/truckInsert</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>TruckEditServlet</servlet-name>
+        <servlet-class>edu.temple.controller.TruckEditServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TruckEditServlet</servlet-name>
+        <url-pattern>/editTruck</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>TagInsertServlet</servlet-name>
+        <servlet-class>edu.temple.controller.TagInsertServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TagInsertServlet</servlet-name>
+        <url-pattern>/tagInsert</url-pattern>
+    </servlet-mapping>
 </web-app>

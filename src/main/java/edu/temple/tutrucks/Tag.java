@@ -156,6 +156,17 @@ public class Tag implements java.io.Serializable, java.lang.Comparable, Searchab
         return results;
     }
     
+    public static Tag findTag (String name) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        Query q = session.createQuery(
+                "from Tag where tagName = " + name + "'"
+        );
+        Tag foundTag = (Tag) q.uniqueResult();
+        session.close();
+        return foundTag;
+    }
+    
     public static Tag createOrRetrieveTag(String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
@@ -165,6 +176,7 @@ public class Tag implements java.io.Serializable, java.lang.Comparable, Searchab
         Tag retval = (Tag) q.uniqueResult();
         session.close();
         return retval == null ? new Tag(name) : retval;
+
     }
 
 }

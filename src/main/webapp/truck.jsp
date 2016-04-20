@@ -1,85 +1,155 @@
-<%@ include file="header.html"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<%@ page import="edu.temple.tutrucks.*" %>
+<%@ page import="java.util.List, java.util.Set,java.util.Locale,java.text.NumberFormat"%>
+<%@page import="edu.temple.tutrucks.User"%>
+<%@ include file="header.jsp"%>
 <style>
-            .panel-heading {
-                background-color: black;
-            }
-            .panel-title {
-                color: #A41E35;
-            }
-            .panel-body {
-                color: black;
-            }
-            
-            .itemName {
-                text-align: left;
-                color: #A41E35;
-            }
-            
-            .modal-header{
-                background-color:  #A41E35;
-                color: white;
-            }
-            
-            .modal-body {
-                color: black;
-            }
-            
-            .click{
-                cursor: pointer;
-            }
-            
+    .panel-heading {
+        background-color: black;
+    }
+    .panel-title {
+        color: #A41E35;
+    }
+    .panel-body {
+        color: black;
+    }
+    .itemName {
+        text-align: left;
+        color: #A41E35;
+    }
+    .modal-header{
+        background-color:  #A41E35;
+        color: white;
+    }
+    .modal-body {
+        color: black;
+    }
+    .click{
+        cursor: pointer;
+    }
 </style>
-        
+
+<%
+    //String search = (String)request.getParameter("truck"); 
+    String search = "Bagel Shop";
+    Truck truck = Truck.getTruckByName(search);
+    String truckName = truck.getTruckName();
+    List<Menu> menus = truck.getMenus();
+    out.print("<script>"
+            + "var truck = {"
+            + "name: '" + truckName + "',"
+            + "lat: " + truck.getLatitude() + ","
+            + "lng: " + truck.getLongitude() + "};"
+            + "</script>");
+%>
+
 <div class="container menu">
     <div class="row">
         <div class="col-lg-8" style="text-align: left;">
-            <h1 style="color: white;"><% //insert truck name %></h1>
+            <h1 style="color: white;"><%=truckName%></h1>
         </div>
         <div class="col-lg-4" style="text-align: right;">
-            <h1 class ="click" style="color: white" data-toggle="modal" data-target="#truckModal"><% //insert dislplay name %></h1>
+            <h1 class ="click" style="color: white" data-toggle="modal" data-target="#truckModal">Avg. Reviews</h1>
         </div>
     </div>
-    
-    <div class="row">
-        <% //insert truck address %>
-        <!--map business -->
+
+    <div class="row-fluid">
+        <button type="button" id="toggleMap" class="btn btn-primary" data-toggle="collapse" data-target="#collapseRow">
+            <span class="glyphicon glyphicon-chevron-down"></span> Show Map
+        </button>
+        <button type="button" class="btn btn-primary" onclick="getDirections();">Get Directions</button>
+    </div>
+    <div class="row-fluid collapse" id="collapseRow">
+        <div id="map" style="height:400px;"></div>
     </div>
 
-    <%@ include file="truckReviewModal.jsp"%>
-    
-    <%@ include file="itemReviewModal.jsp" %>
-    
-    <% //for each menu category, include category jsp
-        out.print("<div class='panel panel-default'>\n");
-            out.print("<div class='panel-heading'>\n");
-                out.print("<h1 class='panel-title'>");
-                //insert Category Title
-                out.print("</h1>\n");
-                out.print("<h5 style='font-style: italic'>");
-                //insert Category description
-                out.print("</h5>\n");
-            out.print("</div>\n");
-            out.print("<div class='panel-body'>\n");
-                out.print("<div class ='container'>\n");
-                    //for each item in category
-                    out.print("<div class='row-fluid'>\n");                                  
-                        out.print("<div class='col-lg-8 itemName'>");
-                            //insert Item Name
-                        out.print("</div>\n");
-                        out.print("<div class='col-lg-2'>");
-                            //insert Item Price
-                        out.print("</div>\n");
-                        out.print("<div class='col-lg-2 click' data-toggle='modal' data-target='#itemModal'>");
-                            //insert review stars
-                        out.print("</div>\n");                                   
-                    out.print("</div>\n");
-                out.print("</div>\n");
-            out.print("</div>\n");
-        out.print("</div>\n");
+    <%-- //include truck review modal--%>
+    <jsp:include page='truckReviewModal.jsp'>
+        <jsp:param name="search" value="<%=truckName%>"/>
+    </jsp:include>
 
-    
-    %>  
-    
+    <%-- //include item review modal--%>
+
+    <!--copied from category.jsp-->
+    <%
+        for (Menu category : menus) {
+            //ignore null menu category from db
+            if (category == null) {
+                continue;
+            }
+    %>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title"> 
+                <%
+                    String name = category.getMenuName();
+                    if (name != null && name != "") {
+                        out.print(name);
+                    } else {
+                        out.print("Menu");
+                    }
+                %>
+
+            </h1>
+            <h5 style="font-style: italic"> 
+                <%
+                    String description = category.getDescription();
+                    if (description != null && description != "") {
+                        out.print(description);
+                    }
+                %>
+            </h5>
+        </div>
+        <div class="panel-body">
+            <div class ="container">
+                <%
+                    String itemName;
+                    double price;
+                    Set<Item> items = category.getItems();
+                    for (Item item : items) {
+                        if (item == null) {
+                            continue;
+                        }
+                %>
+                <!--copied from menuItem.jsp-->
+                <div class="row-fluid">                                  
+                    <div class="col-lg-8 itemName">
+                        <%
+                            itemName = item.getItemName();
+                            out.print(itemName);
+                        %>
+                    </div>
+                    <div class="col-lg-2">
+                        <%
+                            price = item.getPrice();
+                            out.print(NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(price));
+                        %>
+                    </div>
+                    <div class="col-lg-2 click" data-toggle="modal" data-target="#itemModal">
+                        <% //insert average stars
+                            double stars = 0;
+                            double averageStars = 0;
+                            List<ItemReview> reviews = item.getItemReviews();
+                            if (reviews.size() > 0) {
+                                for (ItemReview review : reviews) {
+                                    stars += (double) review.getReviewStars() / 2;
+                                }
+                                averageStars = stars / reviews.size();
+                                out.print(averageStars);
+                            }
+                            out.print("4 stars");
+                        %>
+                    </div>                                   
+                </div> 
+                <!--end menuItem.jsp-->
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <!--end category.jsp-->
+    <% }%>
 </div>
-
 <%@ include file="footer.html"%>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeqH8j_vGz84by2ewV7qGyeolyNx8Xb68&callback=initMap"></script>
+<script src="truckMapJs.js"></script>
