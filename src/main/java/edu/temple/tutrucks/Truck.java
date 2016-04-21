@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import org.hibernate.Query;
@@ -124,7 +125,7 @@ public class Truck implements java.io.Serializable, Reviewable, Taggable, Search
      * @return the set of tags attached to this truck
      */
     @Override
-    public Set getTags() {
+    public Set<Tag> getTags() {
         return this.tags;
     }
     /**
@@ -134,8 +135,8 @@ public class Truck implements java.io.Serializable, Reviewable, Taggable, Search
     @Override
     public void addTags(Tag... t) {
         for (Tag x : t) {
-            if (!x.getTrucks().contains(this)) x.addEntity(this);
             tags.add(x);
+            if (!x.getTrucks().contains(this)) x.addEntity(this);
         }
     }
     /**
@@ -158,7 +159,7 @@ public class Truck implements java.io.Serializable, Reviewable, Taggable, Search
      * Sets the set of tags attached to this truck. Required by Hibernate
      * @param tags the set of tags attached to this truck
      */
-    public void setTags(Set tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags.addAll(tags);
     }
     /**
@@ -302,12 +303,40 @@ public class Truck implements java.io.Serializable, Reviewable, Taggable, Search
     public Set<Tag> loadTags() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        Query q = session.createQuery("from Tag t join t.trucks tr where tr.id = :id");
+        Query q = session.createQuery("from Tag t join t.trucks tr where tr.id = " + this.getId());
         List l = q.list();
-        session.close();
-        for (Object o : l) this.addTags((Tag)o);
+        session.close();        
+        for (Object o : l) {
+            if (o instanceof Tag) this.addTags((Tag)o); 
+        }
         return this.tags;
     }
+
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o instanceof Truck) {
+            Truck t = (Truck) o;
+            return this.id == t.id;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + this.id;
+        hash = 41 * hash + Objects.hashCode(this.truckName);
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.latitude) ^ (Double.doubleToLongBits(this.latitude) >>> 32));
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.longitude) ^ (Double.doubleToLongBits(this.longitude) >>> 32));
+        hash = 41 * hash + Objects.hashCode(this.openingTime);
+        hash = 41 * hash + Objects.hashCode(this.closingTime);
+        return hash;
+    }
+
+
 }
 
 

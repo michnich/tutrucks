@@ -1,9 +1,9 @@
-<%@page import="java.util.Random"%>
 <%@ include file="header.jsp"%>
 <%@ include file="truckReviewModal.jsp"%>
 <%@ include file="itemReviewModal.jsp"%>
 <%@ page import="edu.temple.tutrucks.*"%>
 <%@ page import="java.util.List, java.util.Set,java.util.Locale,java.text.NumberFormat"%>
+
 <style>
     .panel-heading {
         background-color: black;
@@ -14,7 +14,7 @@
     .panel-body {
         color: black;
     }
-    
+
     .itemName {
         text-align: left;
         color: #A41E35;
@@ -36,19 +36,40 @@
 
 <%
     String search = request.getParameter("truck");
-//    search = "Bagel Shop"; //DELETE
     Truck truck = Truck.getTruckByID(Integer.parseInt(search));
     String truckName = truck.getTruckName();
     int truckID = truck.getId();
     List<Menu> menus = truck.getMenus();
     
-
 %>
 
 <div class="container menu">
     <div class="row">
         <div class="col-lg-8" style="text-align: left;">
             <h1 style="color: white;"><%=truckName%></h1>
+            <p style="color: white"><%
+                    Set<Tag> tags = truck.loadTags();
+                    if (!(tags.isEmpty() && user == null)) {
+                        out.print("Tags: <span><span id='current_tags'>");
+                        if (!tags.isEmpty()) {
+                            StringBuilder tagHTML = new StringBuilder();
+                            for (Tag t : tags) {
+                                tagHTML.append("<a class='taglinks' href='search.jsp?tagged="
+                                        + t.getTagName() + "'>" + t.getTagName() + "</a>, ");
+                            }
+                            if (user == null) {
+                                out.print(tagHTML.subSequence(0, tagHTML.lastIndexOf(",")));
+                            } else {
+                                out.print(String.valueOf(tagHTML));
+                            }
+                        }
+                        if (user != null) {
+                            out.print("</span><a id='tag_adder' href='#'>add tags...</a>"
+                                + "<input type='text' id='tag_add_field' hidden />"
+                                + "<input type='button' title='Enter new tags, separated by commas' id='tag_add_button' hidden /></span>");
+                        }
+                    }
+                    %></p>
         </div>
         <div class="col-lg-4" style="text-align: right;">
             <h1 class ="click" style="color: white" data-toggle="modal" data-target="#truckModal" 
@@ -70,17 +91,6 @@
                             }
                     %>
                     </h1>
-                    <p style="color: white"><%
-                            out.print("Tags: <span>");
-                            Set<Tag> tags = truck.loadTags();
-                            for (Tag t : tags) {
-                                out.print("<a class='taglinks' href='search.jsp?tagged=" + 
-                                        t.getTagName() + "'>" + t.getTagName() + "</a>, ");
-                            }
-                            out.print("<a id='tag_adder' href='#'>add tags...</a>"
-                                    + "<input type='text' id='tag_add_field' hidden />"
-                                    + "<input type='button' id='tag_add_button' hidden /></span>");
-                    %></p>
         </div>
     </div>
 
@@ -93,7 +103,6 @@
     <div class="row-fluid collapse" id="collapseRow">
         <div id="map" style="height:400px;"></div>
     </div>
-
 
     <!--copied from category.jsp-->
     <%
@@ -153,15 +162,7 @@
                             double stars = 0.0;
                             double averageStars = 0.0;
                             List<ItemReview> reviews = item.getItemReviews();
-                            
-//                            Random r = new Random();
-//                            for(int i = 0; i < 10; i++){
-//                                ItemReview ir = new ItemReview();
-//                                int rand = r.nextInt(11);
-//                                ir.setReviewStars(rand);
-//                                reviews.add(ir);
-//                            }
-                            
+                        
                             if (reviews.size() > 0) {
                                 stars = item.getScore();
                                 averageStars = stars / 2;
@@ -178,7 +179,7 @@
     <!--end category.jsp-->
     <% }%>
 </div>
-<script>
+    <script>
     $(document).ready(function() {
         $("#tag_adder").click(function () {
             $("#tag_add_button").val('Cancel');
@@ -218,3 +219,4 @@
     </script>
 <%@ include file="footer.html"%>
 <script src="truckMapJs.js">
+
