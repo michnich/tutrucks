@@ -158,7 +158,7 @@ public class Truck implements java.io.Serializable, Reviewable, Taggable, Search
      * Sets the set of tags attached to this truck. Required by Hibernate
      * @param tags the set of tags attached to this truck
      */
-    public void setTags(Set<Tag> tags) {
+    public void setTags(Set tags) {
         this.tags.addAll(tags);
     }
     /**
@@ -272,13 +272,13 @@ public class Truck implements java.io.Serializable, Reviewable, Taggable, Search
         double score = 0.0;
         for (TruckReview tr : truckReviews) {
             if (tr!=null){
-                System.out.println(tr.reviewText);
-                System.out.println(tr.reviewStars);
+                //System.out.println(tr.reviewText);
+                //System.out.println(tr.reviewStars);
                 score += (double)(tr.getReviewStars());
             }
         }
         score /= (double)truckReviews.size();
-        System.out.println(score);
+        //System.out.println(score);
         return (int) Math.round(score);
     }
 
@@ -297,7 +297,17 @@ public class Truck implements java.io.Serializable, Reviewable, Taggable, Search
         return this.truckReviews;
     }
 
-
+    
+    @Override
+    public Set<Tag> loadTags() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query q = session.createQuery("from Tag t join t.trucks tr where tr.id = :id");
+        List l = q.list();
+        session.close();
+        for (Object o : l) this.addTags((Tag)o);
+        return this.tags;
+    }
 }
 
 

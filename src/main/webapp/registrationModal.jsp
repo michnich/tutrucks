@@ -19,16 +19,17 @@
                                 <input type="hidden" id="facebook_id" name="facebook_id" />
                                 <input type="hidden" id="display" name="display" />
                                 <input type="hidden" id="avatar" name="avatar" />
+                                <input type="hidden" id="currentpage" name="currentpage" />
                                 <input type="submit" value="Create Account" />
                             </div>
                             <div class="col-lg-2">
                                 <strong> OR </strong>
                             </div>
                             <div class="col-lg-4">
-                                <div id="loginButton"><img src="images/fbconnect.png" width="180px" height="40px"></div>
+                                <div id="registrationButton"><img src="images/fbconnect.png" width="180px" height="40px"></div>
                                 <script>
                                     $(document).ready(function () {
-                                        $("#loginButton").click(function() {
+                                        $("#registrationButton").click(function() {
                                             FB.getLoginStatus(function(response) {
                                                 if (response.status === 'connected') {
                                                     $('#modal').modal('toggle');
@@ -46,6 +47,7 @@
                                                        document.getElementById("facebook_id").value = response.id;
                                                        document.getElementById("display").value=response.name;
                                                        document.getElementById("avatar").value=response.picture.data.url;
+                                                       document.getElementById("currentpage").value=window.location.href;
                                                      });
                                                     } else {
                                                      console.log('User cancelled login or did not fully authorize.');

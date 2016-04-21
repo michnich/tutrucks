@@ -149,7 +149,7 @@ public class Item implements java.io.Serializable, Reviewable, Taggable, Searcha
      * Sets the set of tags associated with this item. Required by Hibernate
      * @param tags the set of tags associated with this item.
      */
-    public void setTags(Set<Tag> tags) {
+    public void setTags(Set tags) {
         this.tags.addAll(tags);
     }
 
@@ -196,6 +196,17 @@ public class Item implements java.io.Serializable, Reviewable, Taggable, Searcha
         for (Object o : l) revs.add((ItemReview)o);
         this.setItemReviews(revs);
         return this.itemReviews;
+    }
+
+    @Override
+    public Set<Tag> loadTags() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query q = session.createQuery("from Tag t join t.items it where it.id = :id");
+        List l = q.list();
+        session.close();
+        for (Object o : l) this.addTags((Tag)o);
+        return this.tags;
     }
 
 }

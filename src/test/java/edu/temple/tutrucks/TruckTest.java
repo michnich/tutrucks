@@ -161,7 +161,7 @@ public class TruckTest {
         
     }
     
-    @Test
+   /* @Test
     public void testLoadReviews() {
         Truck t;
         List<TruckReview> reviews;
@@ -172,7 +172,7 @@ public class TruckTest {
             if (r != null) System.out.println(r.reviewText);
             else System.out.println("null entry");
         }
-    }
+    }*/
     
     
 }
