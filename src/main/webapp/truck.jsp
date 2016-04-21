@@ -1,9 +1,9 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<%@ page import="edu.temple.tutrucks.*" %>
-<%@ page import="java.util.List, java.util.Set,java.util.Locale,java.text.NumberFormat"%>
-<%@page import="edu.temple.tutrucks.User"%>
+<%@page import="java.util.Random"%>
 <%@ include file="header.jsp"%>
+<%@ include file="truckReviewModal.jsp"%>
+<%@ include file="itemReviewModal.jsp"%>
+<%@ page import="edu.temple.tutrucks.*"%>
+<%@ page import="java.util.List, java.util.Set,java.util.Locale,java.text.NumberFormat"%>
 <style>
     .panel-heading {
         background-color: black;
@@ -14,34 +14,35 @@
     .panel-body {
         color: black;
     }
+    
     .itemName {
         text-align: left;
         color: #A41E35;
     }
+
     .modal-header{
         background-color:  #A41E35;
         color: white;
     }
+
     .modal-body {
         color: black;
     }
+
     .click{
         cursor: pointer;
     }
 </style>
 
 <%
-    //String search = (String)request.getParameter("truck"); 
-    String search = "Bagel Shop";
-    Truck truck = Truck.getTruckByName(search);
+    String search = request.getParameter("truck");
+//    search = "Bagel Shop"; //DELETE
+    Truck truck = Truck.getTruckByID(Integer.parseInt(search));
     String truckName = truck.getTruckName();
+    int truckID = truck.getId();
     List<Menu> menus = truck.getMenus();
-    out.print("<script>"
-            + "var truck = {"
-            + "name: '" + truckName + "',"
-            + "lat: " + truck.getLatitude() + ","
-            + "lng: " + truck.getLongitude() + "};"
-            + "</script>");
+    
+
 %>
 
 <div class="container menu">
@@ -50,7 +51,36 @@
             <h1 style="color: white;"><%=truckName%></h1>
         </div>
         <div class="col-lg-4" style="text-align: right;">
-            <h1 class ="click" style="color: white" data-toggle="modal" data-target="#truckModal">Avg. Reviews</h1>
+            <h1 class ="click" style="color: white" data-toggle="modal" data-target="#truckModal" 
+                data-truckid="<%=truckID%>">
+                <%
+                    truck.loadReviews();
+                            int avgRating=truck.getScore();
+                            int fullStars=avgRating/2;
+                            int halfStars=avgRating%2;
+                            out.print("Reviews: ");
+                            if (avgRating==0){
+                                out.print("None");
+                            }
+                            for (int i=0;i<fullStars;i++){
+                                out.print("<img src='images/Star_Full.png' width='24' height='24'>");
+                            }
+                            if (halfStars==1){
+                                out.print("<img src='images/Star_Half.png' width='12' height='24'>");
+                            }
+                    %>
+                    </h1>
+                    <p style="color: white"><%
+                            out.print("Tags: <span>");
+                            Set<Tag> tags = truck.loadTags();
+                            for (Tag t : tags) {
+                                out.print("<a class='taglinks' href='search.jsp?tagged=" + 
+                                        t.getTagName() + "'>" + t.getTagName() + "</a>, ");
+                            }
+                            out.print("<a id='tag_adder' href='#'>add tags...</a>"
+                                    + "<input type='text' id='tag_add_field' hidden />"
+                                    + "<input type='button' id='tag_add_button' hidden /></span>");
+                    %></p>
         </div>
     </div>
 
@@ -64,18 +94,11 @@
         <div id="map" style="height:400px;"></div>
     </div>
 
-    <%-- //include truck review modal--%>
-    <jsp:include page='truckReviewModal.jsp'>
-        <jsp:param name="search" value="<%=truckName%>"/>
-    </jsp:include>
-
-    <%-- //include item review modal--%>
 
     <!--copied from category.jsp-->
     <%
         for (Menu category : menus) {
-            //ignore null menu category from db
-            if (category == null) {
+            if (category == null) {     //ignore null menu category from db
                 continue;
             }
     %>
@@ -83,14 +106,13 @@
         <div class="panel-heading">
             <h1 class="panel-title"> 
                 <%
-                    String name = category.getMenuName();
-                    if (name != null && name != "") {
-                        out.print(name);
+                    String menuName = category.getMenuName();
+                    if (menuName != null && menuName != "") {
+                        out.print(menuName);
                     } else {
                         out.print("Menu");
                     }
                 %>
-
             </h1>
             <h5 style="font-style: italic"> 
                 <%
@@ -101,44 +123,50 @@
                 %>
             </h5>
         </div>
+
         <div class="panel-body">
             <div class ="container">
                 <%
-                    String itemName;
-                    double price;
                     Set<Item> items = category.getItems();
                     for (Item item : items) {
                         if (item == null) {
                             continue;
                         }
+                        int itemID = item.getId();
                 %>
                 <!--copied from menuItem.jsp-->
                 <div class="row-fluid">                                  
                     <div class="col-lg-8 itemName">
                         <%
-                            itemName = item.getItemName();
+                            String itemName = item.getItemName();
                             out.print(itemName);
                         %>
                     </div>
                     <div class="col-lg-2">
                         <%
-                            price = item.getPrice();
+                            double price = item.getPrice();
                             out.print(NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(price));
                         %>
                     </div>
-                    <div class="col-lg-2 click" data-toggle="modal" data-target="#itemModal">
-                        <% //insert average stars
-                            double stars = 0;
-                            double averageStars = 0;
+                    <div class="col-lg-2 click" data-toggle="modal" data-target="#itemModal" data-truckid="<%=itemID%>">
+                        <%
+                            double stars = 0.0;
+                            double averageStars = 0.0;
                             List<ItemReview> reviews = item.getItemReviews();
+                            
+//                            Random r = new Random();
+//                            for(int i = 0; i < 10; i++){
+//                                ItemReview ir = new ItemReview();
+//                                int rand = r.nextInt(11);
+//                                ir.setReviewStars(rand);
+//                                reviews.add(ir);
+//                            }
+                            
                             if (reviews.size() > 0) {
-                                for (ItemReview review : reviews) {
-                                    stars += (double) review.getReviewStars() / 2;
-                                }
-                                averageStars = stars / reviews.size();
+                                stars = item.getScore();
+                                averageStars = stars / 2;
                                 out.print(averageStars);
                             }
-                            out.print("4 stars");
                         %>
                     </div>                                   
                 </div> 
@@ -150,6 +178,43 @@
     <!--end category.jsp-->
     <% }%>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#tag_adder").click(function () {
+            $("#tag_add_button").val('Cancel');
+            $("#tag_add_field").show();
+            $("#tag_add_button").show();
+        });
+        $("#tag_add_field").keyup(function () {
+            var changeTextToAdd = $(this).val().length > 0;
+            $("#tag_add_button").val(changeTextToAdd ? 'Add Tag' : 'Cancel');            
+        });
+        $("#tag_add_button").click(function () {
+            var addTag = $("#tag_add_field").val();
+            if (addTag) {
+                console.log("making ajax call for " + addTag);
+                $.ajax("addtags", {
+                    method: "POST",
+                    dataType: "json",
+                    data: { names: $("#tag_add_field").val(), id: <%=truckID%>, type: "truck" },
+                    success: function (data) {
+                        var result = "";
+                        for (var i=0; i < data.length; i++) {
+                            result += ("<a class='taglinks' href='search.jsp?tagged=" + data[i] + ">"
+                                   + data[i] + "</a>, ");
+                        }
+                        $("#current_tags").html(result);
+                    },
+                    error: function(jqHXR, status, error) {
+                    
+                    }
+                });
+            } else {
+                $("#tag_add_field").hide();
+                $("#tag_add_button").hide();
+            }
+        });
+    });
+    </script>
 <%@ include file="footer.html"%>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeqH8j_vGz84by2ewV7qGyeolyNx8Xb68&callback=initMap"></script>
-<script src="truckMapJs.js"></script>
+<script src="truckMapJs.js">

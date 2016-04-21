@@ -33,6 +33,18 @@
         <url-pattern>/login</url-pattern>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AutoComplete</servlet-name>
+        <url-pattern>/autocomplete</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AddTag</servlet-name>
+        <servlet-class>edu.temple.controller.AddTagServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddTag</servlet-name>
+        <url-pattern>/addtags</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>TruckInsertServlet</servlet-name>
         <servlet-class>edu.temple.controller.TruckInsertServlet</servlet-class>
@@ -57,5 +69,4 @@
     <servlet-mapping>
         <servlet-name>TagInsertServlet</servlet-name>
         <url-pattern>/tagInsert</url-pattern>
-    </servlet-mapping>
 </web-app>
