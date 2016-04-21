@@ -61,7 +61,9 @@ public class ItemTest {
     
     @Test
     public void testAddReviewFailed() {
-        when(review.getReviewed()).thenReturn(new Item());  
+        Item i = new Item();
+        i.setId(1);
+        when(review.getReviewed()).thenReturn(i);  
         item.addReview(review);
         System.out.println("Verifying review called getReviewed");
         verify(review).getReviewed();
@@ -105,9 +107,9 @@ public class ItemTest {
          for (int i = 0; i < tagList.size(); i++) {
              verify(tagList.get(i)).getItems();
         }
-        System.out.println("Verifying all tags were added to item");    
+        System.out.println("Verifying all tags were added to item");
         for (int i = 0; i < tagList.size(); i++) {
-             assertEquals(item.getTags().contains(tagList.get(i)), true);
+             assertTrue(item.getTags().contains(tagList.get(i)));
         } 
     }
     
@@ -127,5 +129,18 @@ public class ItemTest {
             assertEquals(testResults.get(i).getSearchName(), results.get(i).getSearchName());
         }
     }
+    /*
+    @Test
+    public void testLoadReviews() {
+        Item i;
+        List<ItemReview> reviews;
+        i = Item.searchItems("chicken").get(0);
+        reviews = i.loadReviews();
+        assertTrue(reviews.size() > 0);
+        for (ItemReview r : reviews) {
+            if (r != null) System.out.println(r.reviewText);
+            else System.out.println("null entry");
+        }
+    } */
 }
 

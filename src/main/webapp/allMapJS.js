@@ -3,8 +3,28 @@
 var map;
 var userLocation;
 var templeCenter;
+var trucks= [];
 
 function initMap() {
+    var temp = {
+      name: "Cha Cha",
+      lat: 39.979858,
+      lng: -75.154957,
+    };
+    trucks.push(temp);
+    temp = {
+      name: "Mexican Grill Stand",
+      lat: 39.980964,
+      lng: -75.155242,
+    };
+    trucks.push(temp);
+    temp = {
+      name: "Chicken Heaven",
+      lat: 39.980000,
+      lng:  -75.156046,
+    };
+    trucks.push(temp);
+    
     //MAP SETUP
     templeCenter = {lat: 39.981478, lng: -75.155124};
     map = new google.maps.Map(document.getElementById('map'), {

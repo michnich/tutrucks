@@ -1,13 +1,14 @@
 <%@page import="edu.temple.tutrucks.Truck"%>
 <%@page import="java.util.List"%>
-<%@ include file="header.html"%>
-<form>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ include file="header.jsp"%>
+<form action="tagInsert" method="post">
     <fieldset class='container'>
         <label for="tagName">New Tag</label>
-        <input type="text" placeholder="Name" id="tagName">
+        <input type="text" placeholder="Name" name="tagName">
     </fieldset>
 
-    <fieldset class="form-group">
+    <!--<fieldset class="form-group">
         <div class='col-sm-12'>
             <label>Select trucks to apply the tag to:</label>     
         </div>
@@ -24,7 +25,7 @@
             }
         %>
 
-    </fieldset>
+    </fieldset>-->
     <button type="submit" class='btn btn-primary'>Submit</button>
 </form>
 

@@ -1,16 +1,18 @@
+<%@page import="edu.temple.tutrucks.User"%>
 <%@page import="java.util.Set"%>
 <%@page import="edu.temple.tutrucks.Item"%>
 <%@page import="edu.temple.tutrucks.Menu"%>
 <%@page import="java.util.List"%>
 <%@page import="edu.temple.tutrucks.Truck"%>
-<%@ include file="header.html"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ include file="header.jsp"%>
 <style>
     body {
         color: black;
     }
 </style>
-<div class="container">
-    <form>
+<div class="cover container">
+    <form action="editMenu" method="post">
         <fieldset class="form-group form-inline">
             <label>Select a Truck to Edit</label>
             <select class="form-control" name="truckName">
@@ -27,57 +29,49 @@
         </fieldset>
     </form>
     <form>
+        <input type="hidden" name="truckName" value=<%out.print("'" + selected.getTruckName() + "'");%>>
         <fieldset class="form-group formWrapper">
             <div class="container containerPanelWrapper">
                 <div class="panel panel-default panelCloneWrapper hidden">
                     <div class="panel-heading">
-                        <input type="text" class="form-control" placeholder="Category Title">
-                        <input type="text" class="form-control" placeholder="Category Description">
+                        <input type="text" class="form-control" name="categoryTitle" placeholder="Category Title">
+                        <input type="text" class="form-control" name="categoryDescription" placeholder="Category Description">
                         <button type="button" class="form-control btn btn-danger" id="removeCategory">Remove</button> 
                     </div>
                     <div class="panel-body outerWrapper">
                         <div class ="container-fluid containerWrapper">
                             <div class="row-fluid cloneWrapper">
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" placeholder="Item Name">
+                                    <input type="text" class="form-control" name="itemName" placeholder="Item Name">
                                 </div>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="Item Price">       
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" name="itemPrice" placeholder="Item Price">       
                                 </div> 
-                                <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-primary">Add tags</button>
-                                </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <button type="button" class="form-control btn btn-danger removeItem">Remove</button>       
                                 </div>                              
                             </div>
                             <div class="row-fluid cloneWrapper">
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" placeholder="Item Name">
+                                    <input type="text" class="form-control" name="itemName" placeholder="Item Name">
                                 </div>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="Item Price">       
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" name="itemPrice" placeholder="Item Price">       
                                 </div> 
-                                <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-primary">Add tags</button>
-                                </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <button type="button" class="form-control btn btn-danger removeItem">Remove</button>       
-                                </div>                        
+                                </div>                              
                             </div>
                             <div class="row-fluid cloneWrapper">
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" placeholder="Item Name">
+                                    <input type="text" class="form-control" name="itemName" placeholder="Item Name">
                                 </div>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="Item Price">       
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" name="itemPrice" placeholder="Item Price">       
                                 </div> 
-                                <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-primary">Add tags</button>
-                                </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <button type="button" class="form-control btn btn-danger removeItem">Remove</button>       
-                                </div>                         
+                                </div>                              
                             </div>      
                         </div>
                         <div class="row-fluid">
@@ -105,8 +99,8 @@
 
                         out.print("<div class='panel panel-default panelCloneWrapper'>"
                                 + "<div class='panel-heading'>"
-                                + "<input type='text' class='form-control' value='" + menuName + "'>"
-                                + "<input type='text' class='form-control' value='" + menuDescription + "'>"
+                                + "<input type='text' class='form-control' name='categoryName' value='" + menuName + "'>"
+                                + "<input type='text' class='form-control' name='categoryTitle' value='" + menuDescription + "'>"
                                 + "<button type='button' class='form-control btn btn-danger' id='removeCategory'>Remove</button> "
                                 + "</div>"
                                 + "<div class='panel-body outerWrapper'>"
@@ -124,15 +118,12 @@
 
                             out.print("<div class='row-fluid cloneWrapper'>"
                                     + "<div class='col-sm-6'>"
-                                    + "<input type='text' class='form-control' value='" + itemName + "'>"
+                                    + "<input type='text' class='form-control' name='itemName' value='" + itemName + "'>"
                                     + "</div>"
-                                    + "<div class='col-sm-2'>"
-                                    + "<input type='text' class='form-control' value='" + itemPrice + "'>"
-                                    + "</div> "
-                                    + "<div class='col-sm-2'>"
-                                    + "<button type='button' class='form-control btn btn-primary'>Add tags</button>"
+                                    + "<div class='col-sm-3'>"
+                                    + "<input type='text' class='form-control' name='itemPrice' value='" + itemPrice + "'>"
                                     + "</div>"
-                                    + "<div class='col-sm-2'>"
+                                    + "<div class='col-sm-3'>"
                                     + "<button type='button' class='form-control btn btn-danger removeItem'>Remove</button>       "
                                     + "</div>"
                                     + "</div>");
@@ -148,8 +139,6 @@
                                 + "</div>");
 
                     }
-
-
                 %>
             </div>
             <button type="button" class="btn btn-primary" id="addCategory">New Category</button>
@@ -158,4 +147,4 @@
     </form>
 </div>
 <%@ include file="footer.html"%>
-<script src="addTruck.js"></script>
+<script src="cloneMenu.js"></script>
