@@ -94,8 +94,14 @@
         </div>
     </div>
 
-    <div class="row">
-        <!--map business -->
+    <div class="row-fluid">
+        <button type="button" id="toggleMap" class="btn btn-primary" data-toggle="collapse" data-target="#collapseRow">
+            <span class="glyphicon glyphicon-chevron-down"></span> Show Map
+        </button>
+        <button type="button" class="btn btn-primary" onclick="getDirections();">Get Directions</button>
+    </div>
+    <div class="row-fluid collapse" id="collapseRow">
+        <div id="map" style="height:400px;"></div>
     </div>
 
     <!--copied from category.jsp-->
@@ -212,4 +218,5 @@
     });
     </script>
 <%@ include file="footer.html"%>
+<script src="truckMapJs.js">
 
