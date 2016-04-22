@@ -32,6 +32,11 @@
     .click{
         cursor: pointer;
     }
+    .mapButton {
+        color: white;
+        background-color: #A41E35;
+        border: 3px;
+    }
 </style>
 
 <%
@@ -96,9 +101,9 @@
 
     <div class="row-fluid">
         <button type="button" id="toggleMap" class="btn btn-primary" data-toggle="collapse" data-target="#collapseRow">
-            <span class="glyphicon glyphicon-chevron-down"></span> Show Map
+            <span class="glyphicon glyphicon-chevron-up"></span> Hide Map
         </button>
-        <button type="button" class="btn btn-primary" onclick="getDirections();">Get Directions</button>
+        <button type="button" class="btn btn-primary mapButton" onclick="getDirections();">Get Directions</button>
     </div>
     <div class="row-fluid collapse" id="collapseRow">
         <div id="map" style="height:400px;"></div>
