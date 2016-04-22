@@ -32,81 +32,95 @@
     .click{
         cursor: pointer;
     }
-    .mapButton {
+    .mapButton, .mapButton:active, .mapButton:focus{
         color: white;
         background-color: #A41E35;
-        border: 3px;
+        border-color: white;
+        border: 3px solid white;
+    }
+
+    .mapButton:hover {
+        color: #A41E35;
+        background-color: white;
+        border: 3px solid white;
     }
 </style>
 
-<%
-    String search = request.getParameter("truck");
+<%    String search = request.getParameter("truck");
     Truck truck = Truck.getTruckByID(Integer.parseInt(search));
     String truckName = truck.getTruckName();
     int truckID = truck.getId();
     List<Menu> menus = truck.getMenus();
-    
+
+    out.println("<script>var truck = {lat: " + truck.getLatitude() + ", lng: " + truck.getLongitude() + "};</script>");
+
+
 %>
+
 
 <div class="container menu">
     <div class="row">
         <div class="col-lg-8" style="text-align: left;">
             <h1 style="color: white;"><%=truckName%></h1>
             <p style="color: white"><%
-                    Set<Tag> tags = truck.loadTags();
-                    if (!(tags.isEmpty() && user == null)) {
-                        out.print("Tags: <span><span id='current_tags'>");
-                        if (!tags.isEmpty()) {
-                            StringBuilder tagHTML = new StringBuilder();
-                            for (Tag t : tags) {
-                                tagHTML.append("<a class='taglinks' href='search.jsp?tagged="
-                                        + t.getTagName() + "'>" + t.getTagName() + "</a>, ");
-                            }
-                            if (user == null) {
-                                out.print(tagHTML.subSequence(0, tagHTML.lastIndexOf(",")));
-                            } else {
-                                out.print(String.valueOf(tagHTML));
-                            }
+                Set<Tag> tags = truck.loadTags();
+                if (!(tags.isEmpty() && user == null)) {
+                    out.print("Tags: <span><span id='current_tags'>");
+                    if (!tags.isEmpty()) {
+                        StringBuilder tagHTML = new StringBuilder();
+                        for (Tag t : tags) {
+                            tagHTML.append("<a class='taglinks' href='search.jsp?tagged="
+                                    + t.getTagName() + "'>" + t.getTagName() + "</a>, ");
                         }
-                        if (user != null) {
-                            out.print("</span><a id='tag_adder' href='#'>add tags...</a>"
-                                + "<input type='text' id='tag_add_field' hidden />"
-                                + "<input type='button' title='Enter new tags, separated by commas' id='tag_add_button' hidden /></span>");
+                        if (user == null) {
+                            out.print(tagHTML.subSequence(0, tagHTML.lastIndexOf(",")));
+                        } else {
+                            out.print(String.valueOf(tagHTML));
                         }
                     }
-                    %></p>
+                    if (user != null) {
+                        out.print("</span><a id='tag_adder' href='#'>add tags...</a>"
+                                + "<input type='text' id='tag_add_field' hidden />"
+                                + "<input type='button' title='Enter new tags, separated by commas' id='tag_add_button' hidden /></span>");
+                    }
+                }
+                %></p>
         </div>
         <div class="col-lg-4" style="text-align: right;">
             <h1 class ="click" style="color: white" data-toggle="modal" data-target="#truckModal" 
                 data-truckid="<%=truckID%>">
                 <%
                     truck.loadReviews();
-                            int avgRating=truck.getScore();
-                            int fullStars=avgRating/2;
-                            int halfStars=avgRating%2;
-                            out.print("Reviews: ");
-                            if (avgRating==0){
-                                out.print("None");
-                            }
-                            for (int i=0;i<fullStars;i++){
-                                out.print("<img src='images/Star_Full.png' width='24' height='24'>");
-                            }
-                            if (halfStars==1){
-                                out.print("<img src='images/Star_Half.png' width='12' height='24'>");
-                            }
-                    %>
-                    </h1>
+                    int avgRating = truck.getScore();
+                    int fullStars = avgRating / 2;
+                    int halfStars = avgRating % 2;
+                    out.print("Reviews: ");
+                    if (avgRating == 0) {
+                        out.print("None");
+                    }
+                    for (int i = 0; i < fullStars; i++) {
+                        out.print("<img src='images/Star_Full.png' width='24' height='24'>");
+                    }
+                    if (halfStars == 1) {
+                        out.print("<img src='images/Star_Half.png' width='12' height='24'>");
+                    }
+                %>
+            </h1>
         </div>
     </div>
 
-    <div class="row-fluid">
-        <button type="button" id="toggleMap" class="btn btn-primary" data-toggle="collapse" data-target="#collapseRow">
-            <span class="glyphicon glyphicon-chevron-up"></span> Hide Map
-        </button>
-        <button type="button" class="btn btn-primary mapButton" onclick="getDirections();">Get Directions</button>
+    <div class="container" style="padding-bottom: 10px;">
+        <div class="row-fluid">
+            <div class="col-md-3">
+                <button type="button" id="more" class="btn btn-primary mapButton" data-toggle="collapse" data-target="#collapseMap">
+                    <strong><span class="glyphicon glyphicon-chevron-up"></span> Hide Map</strong>
+                </button>
+                <button type="button" class="btn btn-primary mapButton" onclick="getDirections();"><strong>Get Directions</strong></button>
+            </div>
+        </div>
     </div>
-    <div class="row-fluid collapse" id="collapseRow">
-        <div id="map" style="height:400px;"></div>
+    <div class="row-fluid collapse in" id="collapseMap">
+        <div class="collapse in" id="map" style="height:400px;"></div>
     </div>
 
     <!--copied from category.jsp-->
@@ -167,7 +181,7 @@
                             double stars = 0.0;
                             double averageStars = 0.0;
                             List<ItemReview> reviews = item.getItemReviews();
-                        
+
                             if (reviews.size() > 0) {
                                 stars = item.getScore();
                                 averageStars = stars / 2;
@@ -184,8 +198,8 @@
     <!--end category.jsp-->
     <% }%>
 </div>
-    <script>
-    $(document).ready(function() {
+<script>
+    $(document).ready(function () {
         $("#tag_adder").click(function () {
             $("#tag_add_button").val('Cancel');
             $("#tag_add_field").show();
@@ -193,7 +207,7 @@
         });
         $("#tag_add_field").keyup(function () {
             var changeTextToAdd = $(this).val().length > 0;
-            $("#tag_add_button").val(changeTextToAdd ? 'Add Tag' : 'Cancel');            
+            $("#tag_add_button").val(changeTextToAdd ? 'Add Tag' : 'Cancel');
         });
         $("#tag_add_button").click(function () {
             var addTag = $("#tag_add_field").val();
@@ -202,17 +216,17 @@
                 $.ajax("addtags", {
                     method: "POST",
                     dataType: "json",
-                    data: { names: $("#tag_add_field").val(), id: <%=truckID%>, type: "truck" },
+                    data: {names: $("#tag_add_field").val(), id: <%=truckID%>, type: "truck"},
                     success: function (data) {
                         var result = "";
-                        for (var i=0; i < data.length; i++) {
+                        for (var i = 0; i < data.length; i++) {
                             result += ("<a class='taglinks' href='search.jsp?tagged=" + data[i] + ">"
-                                   + data[i] + "</a>, ");
+                                    + data[i] + "</a>, ");
                         }
                         $("#current_tags").html(result);
                     },
-                    error: function(jqHXR, status, error) {
-                    
+                    error: function (jqHXR, status, error) {
+
                     }
                 });
             } else {
@@ -221,7 +235,7 @@
             }
         });
     });
-    </script>
+</script>
+<script src="truckMapJs.js"></script>
 <%@ include file="footer.html"%>
-<script src="truckMapJs.js">
 

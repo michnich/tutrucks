@@ -73,4 +73,5 @@
     <servlet-mapping>
         <servlet-name>TagInsertServlet</servlet-name>
         <url-pattern>/tagInsert</url-pattern>
+    </servlet-mapping>
 </web-app>
