@@ -46,27 +46,27 @@
         <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="spacer"></div>
             <a class="thumbnail"href="deleteTruck.jsp"><h3>Delete a Truck</h3>
-                <i style="font-size: 4.5vw; padding-top: 10px;" class="glyphicon glyphicon-trash"></i> </a>
+                <i style="font-size: 4.5vw; padding-top: 10px;" class="glyphicon glyphicon-trash"></i></a>
         </div>
         <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="spacer"></div>
-            <h4><a class="thumbnail"href="addTruckImage.jsp">Add a truck image</a></h4>
+            <a class="thumbnail"href="addTruckImage.jsp"><h3>Add a truck image</h3>
+            <i style="font-size: 4.5vw; padding-top: 10px;" class="glyphicon glyphicon-picture"></i></a>
         </div>
         <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="spacer"></div>
-            <h4><a class="thumbnail"href="deleteReviews.jsp">Delete Reviews</a></h4>
+            <a class="thumbnail"href="deleteReviews.jsp"><h3>Delete Reviews</h3>
+            <i style="font-size: 4.5vw; padding-top: 10px;" class="glyphicon glyphicon-thumbs-down"></i></a>
         </div>
         <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="spacer"></div>
-            <h4><a class="thumbnail"href="editMenu.jsp">Edit Menu</a></h4>
+            <a class="thumbnail"href="editMenu.jsp"><h3>Edit Menu</h3>
+                <i style="font-size: 4.5vw; padding-top: 10px;" class="glyphicon glyphicon-cutlery"></i></a>
         </div>
         <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="spacer"></div>
-            <h4><a class="thumbnail"href="addTag.jsp">Add a Tag</a></h4>
-        </div>
-        <div class="col-md-3 col-sm-4 col-xs-6">
-            <div class="spacer"></div>
-            <h4><a class="thumbnail"href="deleteTag.jsp">Delete a Tag</a></h4>
+            <a class="thumbnail"href="deleteTag.jsp"><h3>Delete a Tag</h3>
+            <i style="font-size: 4.5vw; padding-top: 10px;" class="glyphicon glyphicon-tag"></i></a>
         </div>
     </div>
 </div>

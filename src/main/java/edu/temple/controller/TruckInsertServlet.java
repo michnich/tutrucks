@@ -47,11 +47,11 @@ public class TruckInsertServlet extends HttpServlet {
             String tagString = req.getParameter("tags");
             List<String> tagList = Arrays.asList(tagString.split("'"));
             Set<Tag> tagSet = new TreeSet();
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(insertTruck);
-            session.flush();
-            session.close();
+           
+            //session.beginTransaction();
+            //session.save(insertTruck);
+            //session.flush();
+            //session.close();
         } catch (Exception e) {
 
         }

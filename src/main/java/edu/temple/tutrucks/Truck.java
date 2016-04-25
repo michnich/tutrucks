@@ -201,7 +201,7 @@ public class Truck implements java.io.Serializable, Reviewable, Taggable, Search
     }
     
     public static List<String> getAllTruckNames() {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         Query q = session.createQuery("select truckName from Truck order by truckName ASC");
         List l = q.list();
@@ -246,7 +246,7 @@ public class Truck implements java.io.Serializable, Reviewable, Taggable, Search
         timeMinute = 0;
         Time current = new Time(timeHour, timeMinute, 0);
         Time end = new Time(11, 0, 0);
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = session.beginTransaction();
         Query q = session.createQuery("from Truck t where t.openingTime <=:time and t.closingTime >:time");
         q.setParameter("time", current);

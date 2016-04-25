@@ -120,7 +120,7 @@
         </div>
     </div>
     <div class="row-fluid collapse in" id="collapseMap">
-        <div class="collapse in" id="map" style="height:400px;"></div>
+        <div class="collapse in" id="map" style="height:300px; margin-bottom: 15px;"></div>
     </div>
 
     <!--copied from category.jsp-->
@@ -236,6 +236,6 @@
         });
     });
 </script>
-<script src="truckMapJs.js"></script>
 <%@ include file="footer.html"%>
-
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeqH8j_vGz84by2ewV7qGyeolyNx8Xb68&callback=initMap"></script>
+<script src="truckMapJs.js"></script>

@@ -1,4 +1,47 @@
 <%@ include file="header.jsp"%>
+<style>
+    body{
+        text-shadow: none;
+        color: white;
+    }
+    
+    .panel .panel-heading, .panel-body{
+        background-color: #A41E35;
+        border: solid 5px white;
+    }
+    
+    .panel-body {
+        border-top: none;
+    }
+    
+    .top-buffer {
+        margin-top: 10px;
+    }
+    
+    .remove {
+        background-color: #A41E35;
+        color: #999;
+        border: solid 3px #999;
+
+    }
+    .remove:hover {
+        background-color: #999;
+        color: #A41E35;
+        border: solid 3px #999;
+    }
+    
+    .addButton {
+        background-color: #A41E35;
+        color: white;
+        border: solid 3px white;
+    }
+    
+    .addButton:hover {
+        background-color: white;
+        color: #A41E35;
+        border: solid 3px white;
+    }
+</style>
 <div class="container">
     <h1>Add a new truck</h1>
     <form method="post" action="truckInsert">
@@ -40,11 +83,11 @@
                     <div class="panel-heading">
                         <input type="text" class="form-control" placeholder="Category Title">
                         <input type="text" class="form-control" placeholder="Category Description">
-                        <button type="button" class="form-control btn btn-danger" id="removeCategory">Remove</button> 
+                        <button type="button" class="form-control btn btn-danger remove" id="removeCategory">Remove</button> 
                     </div>
                     <div class="panel-body outerWrapper">
                         <div class ="container-fluid containerWrapper">
-                            <div class="row-fluid cloneWrapper">
+                            <div class="row-fluid top-buffer cloneWrapper">
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" placeholder="Item Name">
                                 </div>
@@ -52,13 +95,13 @@
                                     <input type="text" class="form-control" placeholder="Item Price">       
                                 </div> 
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-primary">Add tags</button>
+                                    <button type="button" class="form-control btn btn-primary addButton">Add tags</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-danger removeItem">Remove</button>       
+                                    <button type="button" class="form-control btn btn-danger remove removeItem">Remove</button>       
                                 </div>                              
                             </div>
-                            <div class="row-fluid cloneWrapper">
+                            <div class="row-fluid top-buffer cloneWrapper">
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" placeholder="Item Name">
                                 </div>
@@ -66,13 +109,13 @@
                                     <input type="text" class="form-control" placeholder="Item Price">       
                                 </div> 
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-primary">Add tags</button>
+                                    <button type="button" class="form-control btn btn-primary addButton">Add tags</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-danger removeItem">Remove</button>       
+                                    <button type="button" class="form-control btn btn-danger remove removeItem">Remove</button>       
                                 </div>                        
                             </div>
-                            <div class="row-fluid cloneWrapper">
+                            <div class="row-fluid top-buffer cloneWrapper">
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" placeholder="Item Name">
                                 </div>
@@ -80,16 +123,16 @@
                                     <input type="text" class="form-control" placeholder="Item Price">       
                                 </div> 
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-primary">Add tags</button>
+                                    <button type="button" class="form-control btn btn-primary addButton">Add tags</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-danger removeItem">Remove</button>       
+                                    <button type="button" class="form-control btn btn-danger remove removeItem">Remove</button>       
                                 </div>                         
                             </div>      
                         </div>
-                        <div class="row-fluid">
+                        <div class="row-fluid top-buffer">
                             <div class="col-sm-2 col-sm-push-10">
-                                <button type="button" class="btn btn-primary addItem">New Item</button>
+                                <button type="button" class="btn btn-primary addButton addItem">New Item</button>
                             </div> 
                         </div>  
                     </div>
@@ -98,11 +141,11 @@
                     <div class="panel-heading">
                         <input type="text" class="form-control" placeholder="Category Title">
                         <input type="text" class="form-control" placeholder="Category Description">
-                        <button type="button" class="form-control btn btn-danger" id="removeCategory">Remove</button> 
+                        <button type="button" class="form-control btn btn-danger remove" id="removeCategory">Remove</button> 
                     </div>
                     <div class="panel-body outerWrapper">
                         <div class ="container-fluid containerWrapper">
-                            <div class="row-fluid cloneWrapper">
+                            <div class="row-fluid top-buffer cloneWrapper">
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" placeholder="Item Name">
                                 </div>
@@ -110,13 +153,13 @@
                                     <input type="text" class="form-control" placeholder="Item Price">       
                                 </div> 
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-primary">Add tags</button>
+                                    <button type="button" class="form-control btn btn-primary addButton">Add tags</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-danger removeItem">Remove</button>       
+                                    <button type="button" class="form-control btn btn-danger remove removeItem">Remove</button>       
                                 </div>                              
                             </div>
-                            <div class="row-fluid cloneWrapper">
+                            <div class="row-fluid top-buffer cloneWrapper">
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" placeholder="Item Name">
                                 </div>
@@ -124,13 +167,13 @@
                                     <input type="text" class="form-control" placeholder="Item Price">       
                                 </div> 
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-primary">Add tags</button>
+                                    <button type="button" class="form-control btn btn-primary addButton">Add tags</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-danger removeItem">Remove</button>       
+                                    <button type="button" class="form-control btn btn-danger remove removeItem">Remove</button>       
                                 </div>                        
                             </div>
-                            <div class="row-fluid cloneWrapper">
+                            <div class="row-fluid top-buffer cloneWrapper">
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" placeholder="Item Name">
                                 </div>
@@ -138,24 +181,24 @@
                                     <input type="text" class="form-control" placeholder="Item Price">       
                                 </div> 
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-primary">Add tags</button>
+                                    <button type="button" class="form-control btn btn-primary addButton">Add tags</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button type="button" class="form-control btn btn-danger removeItem">Remove</button>       
+                                    <button type="button" class="form-control btn btn-danger remove removeItem">Remove</button>       
                                 </div>                         
                             </div>      
                         </div>
-                        <div class="row-fluid">
+                        <div class="row-fluid top-buffer">
                             <div class="col-sm-2 col-sm-push-10">
-                                <button type="button" class="btn btn-primary addItem">New Item</button>
+                                <button type="button" class="btn btn-primary addButton addItem">New Item</button>
                             </div> 
                         </div>  
                     </div>
                 </div>  
             </div>
-            <button type="button" class="btn btn-primary" id="addCategory">New Category</button>
+            <button type="button" class="btn btn-primary addButton" id="addCategory">New Category</button>
         </fieldset>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary addButton">Submit</button>
     </form>
 </div>
 <%@ include file="footer.html"%>
