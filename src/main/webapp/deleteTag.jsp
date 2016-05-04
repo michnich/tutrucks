@@ -20,16 +20,6 @@
             <input type="text" class="form-control" name="tagNameText">
         </div>
         <div class="col-sm-4">
-            <select class="form-control" name="tagNameSelect">
-                <%        
-                    List<Tag> list = Tag.searchTags("*");
-                    for (Tag t : list) {
-                        out.print("<option>" + t.getTagName() + "</option>");
-                    }
-                %>
-            </select>
-        </div>
-        <div class="col-sm-4">
             <button class='btn btn-primary' name='submitted'>Select Tag</button>
         </div>
     </form>
