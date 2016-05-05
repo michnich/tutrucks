@@ -36,10 +36,10 @@ public class SearchAcceptanceTests {
         baseUrl = "http://localhost:8080/";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
-    
+
     @Test
-    public void testFullSearchTruck() throws Exception {
-        driver.get(baseUrl + "/");
+    public void testSearchTruck() throws Exception {
+        driver.get(baseUrl + "index.jsp");
         driver.findElement(By.id("searchbar")).sendKeys("chicken heaven");
         driver.findElement(By.cssSelector("input.search")).click();
         driver.findElement(By.cssSelector("a > h1.panel-title")).click();
@@ -51,8 +51,8 @@ public class SearchAcceptanceTests {
     }
 
     @Test
-    public void testAutoCompleteTruck() throws Exception {
-        driver.get(baseUrl + "/");
+    public void testAutoComplete() throws Exception {
+        driver.get(baseUrl + "index.jsp");
         driver.findElement(By.id("searchbar")).sendKeys("chick");
         for (int second = 0;; second++) {
             if (second >= 60) {
@@ -72,6 +72,34 @@ public class SearchAcceptanceTests {
         driver.findElement(By.cssSelector("a > h1.panel-title")).click();
         try {
             assertEquals("Chicken Heaven", driver.findElement(By.cssSelector("h1")).getText());
+        } catch (Error e) {
+            verificationErrors.append(e.toString());
+        }
+    }
+
+    @Test
+    public void testSearchItem() throws Exception {
+        driver.get(baseUrl + "/index.jsp");
+        driver.findElement(By.id("searchbar")).clear();
+        driver.findElement(By.id("searchbar")).sendKeys("onion bagel");
+        driver.findElement(By.cssSelector("input.search")).click();
+        driver.findElement(By.cssSelector("div.col-md-8 > div.panel.panel-default > div.panel-body > div.panel.panel-danger > div.panel-heading > a > h1.panel-title")).click();
+        try {
+            assertEquals("Bagel Shop", driver.findElement(By.cssSelector("h1")).getText());
+        } catch (Error e) {
+            verificationErrors.append(e.toString());
+        }
+    }
+
+    @Test
+    public void testSearchTag() throws Exception {
+        driver.get(baseUrl + "/index.jsp");
+        driver.findElement(By.id("searchbar")).clear();
+        driver.findElement(By.id("searchbar")).sendKeys("breakfast");
+        driver.findElement(By.cssSelector("input.search")).click();
+        driver.findElement(By.cssSelector("a > h1.panel-title")).click();
+        try {
+            assertEquals("Bagel Shop", driver.findElement(By.cssSelector("h1")).getText());
         } catch (Error e) {
             verificationErrors.append(e.toString());
         }

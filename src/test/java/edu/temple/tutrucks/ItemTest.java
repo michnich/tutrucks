@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package edu.temple.tutrucks;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -14,11 +15,13 @@ import java.util.Set;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import static org.mockito.Mockito.*;
+
 /**
  *
  * @author michn_000
  */
 public class ItemTest {
+
     private ItemReview review;
     private Tag tag;
     private Item item;
@@ -26,97 +29,48 @@ public class ItemTest {
     private List<Tag> tagList;
     private static User realUser;
     private static Tag realTag;
-    
+    private static ItemReview realReview;
+
     @BeforeClass
     public static void setup() {
         realUser = User.createUser("itemtest@test.com", "password", false, null, null, null);
         realTag = Tag.retrieveTag("item test tag", true);
+        realReview = new ItemReview();
+        realReview.setReviewText("test review");
+        realReview.setUser(realUser);
+        realReview.setReviewStars(3);
+        realReview.setReviewDate(new Date());
     }
-    
+
     @AfterClass
     public static void tearDown() {
+        realReview.delete();
         realUser.delete();
         realTag.delete();
     }
-    
+
     @Before
     public void setUpMock() {
-        review = mock(ItemReview.class);   
+        review = mock(ItemReview.class);
         tag = mock(Tag.class);
         item = new Item();
-        itemSet = new HashSet();       
+        itemSet = new HashSet();
         tagList = new ArrayList();
-        for (int i =0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             Tag tempTag = mock(Tag.class);
             tagList.add(tempTag);
         }
     }
-    
+
     @Test
-    public void testMockCreation(){
+    public void testMockCreation() {
         assertNotNull(review);
         assertNotNull(tag);
         assertNotNull(item);
         assertNotNull(itemSet);
         assertNotNull(tagList);
     }
-    
-    @Test
-    public void testAddReview() {
-        item.addReview(review);
-        System.out.println("Verifying review called setReviewed");
-        verify(review).setReviewed(item);
-        //System.out.println("Verifying if condition was false");
-        //assertEquals(true, review.getReviewed().equals(item));
-        //System.out.println("Verifying that the review was added to the list");
-        //assertEquals(item.getItemReviews().get(0), review);
-    }
-    
 
-   @Test
-    public void testAddTagItemInTagSet() { 
-        itemSet.add(item);
-        when(tag.getItems()).thenReturn(itemSet);
-        item.addTags(tag);
-        //System.out.println("Verifying tag was added to item");
-        //assertEquals(item.getTags().contains(tag), true);
-    }
-    
-    @Test
-    public void testAddTagItemNotInTagSet() { 
-        when(tag.getItems()).thenReturn(itemSet);
-        item.addTags(tag);
-        System.out.println("Verifying item added to tag");
-        verify(tag).addEntity(item);
-        //System.out.println("Verifying tag added the item");
-        //assertEquals(item.getTags().contains(tag), true);
-    }
-    
-    @Test
-    public void testAddMultipleTags() { 
-        itemSet.add(item);
-        /*for (int i = 0; i < tagList.size(); i++) {
-            when(tagList.get(i).getItems()).thenReturn(itemSet);
-        }*/
-        item.addTags(tagList.get(0), tagList.get(1), tagList.get(2), tagList.get(3), tagList.get(4));
-        System.out.println("Verifying all tags called add entity");
-         for (int i = 0; i < tagList.size(); i++) {
-             verify(tagList.get(i)).addEntity(item);
-        }
-        //System.out.println("Verifying all tags were added to item");
-        /*for (int i = 0; i < tagList.size(); i++) {
-             assertTrue(item.getTags().contains(tagList.get(i)));
-        } */
-    }
-    
-    @Test
-    public void testAddTagIntegration() {
-        Item realItem = Item.getItemByID(1);
-        realItem.addTags(realTag);
-        realTag.save();
-        assertTrue(realItem.loadTags().getTags().contains(realTag));
-    }
-    
     @Test
     public void testGetScore() {
         ItemReview ir1 = new ItemReview();
@@ -131,7 +85,24 @@ public class ItemTest {
         item.setItemReviews(reviewList);
         assertEquals(5, item.getScore());
     }
-    
+
+    @Test
+    public void testAddTagIntegration() {
+        Item realItem = Item.getItemByID(1);
+        realItem.addTags(realTag);
+        realTag.save();
+        assertTrue(realItem.loadTags().getTags().contains(realTag));
+    }
+
+    @Test
+    public void testAddReviewIntegration() {
+        Item realItem = Item.getItemByID(1);
+        realReview.setReviewed(realItem);
+        realItem.addReview(realReview);
+        realReview.save();
+        assertTrue(realItem.loadReviews().getItemReviews().contains(realReview));
+    }
+
     @Test
     public void testSearchItems() {
         String searchTerms = "cheesesteak";
@@ -148,9 +119,9 @@ public class ItemTest {
             assertEquals(testResults.get(i).getSearchName(), results.get(i).getSearchName());
         }
     }
-    
+
     @Test
-    public void testLoadReviews() { 
+    public void testLoadReviews() {
         Item realItem = Item.getItemByID(1, false, false);
         ItemReview realFakeReview = new ItemReview();
         realFakeReview.setItem(realItem);
@@ -162,7 +133,7 @@ public class ItemTest {
         assertTrue(realItem.loadReviews().getItemReviews().contains(realFakeReview));
         realFakeReview.delete();
     }
-    
+
     @Test
     public void testEqualsIntegration() {
         Item realItem = Item.getItemByID(1);
@@ -172,4 +143,3 @@ public class ItemTest {
         assertFalse(realItem.equals(testObject));
     }
 }
-
