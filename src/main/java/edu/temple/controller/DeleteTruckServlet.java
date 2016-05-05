@@ -41,12 +41,24 @@ public class DeleteTruckServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         int id = Integer.parseInt(request.getParameter("truckId"));
+        System.out.println("got the parameter");
         Truck deleteTruck = Truck.getTruckByID(id);
-        if (deleteTruck != null) {
-            deleteTruck.delete();
-            try (PrintWriter out = response.getWriter()) {
-                out.println("Truck deleted");
+        System.out.println("got the truck");
+        System.out.println("name is " + deleteTruck.getTruckName());
+        try (PrintWriter out = response.getWriter()) {
+            System.out.println("got the writer");
+            if (deleteTruck != null) {
+                System.out.println("not null");
+                deleteTruck.delete();
+                out.print("Truck deleted");
             }
+            else {
+                System.out.println("is null");
+                out.print("Truck does not exist");
+            }
+
+        } catch (IOException ex) {
+            System.out.println("catch");
         }
     }
 }

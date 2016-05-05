@@ -67,8 +67,7 @@
         <fieldset class="form-group form-inline">
             <label>Select a Truck to Edit</label>
             <select class="form-control" name="truckName">
-                <%  
-                    Truck selected = new Truck();
+                <%                    Truck selected = new Truck();
                     boolean submitted = false;
                     if (request.getParameter("submitted") != null) {
                         selected = Truck.getTruckByID(Integer.parseInt(request.getParameter("truckName")));
@@ -168,86 +167,90 @@
                     </div>
                 </div>
                 <%
-                    selected = Truck.getTruckByID(Integer.parseInt(request.getParameter("truckName")));
-                    out.print("<h2>" + selected.getTruckName() + "</h2>");
-                    List<Menu> menu = selected.getMenus();
-                    for (Menu m : menu) {
-                        if (m == null) {
-                            continue;
-                        }
-                        String menuName = m.getMenuName();
-                        String menuDescription = "";
-
-                        if (m.getDescription() != null) {
-                            menuDescription = m.getDescription();
-                        }
-
-                        out.print("<div class='panel panel-default panelCloneWrapper'>"
-                                + "<div class='panel-heading'>"
-                                + "<input type='hidden' name='menuId' value='" + m.getId() +"'>"
-                                + "<input type='text' class='form-control' name='categoryTitle' value='" + menuName + "'>"
-                                + "<input type='text' class='form-control' name='categoryDescription' value='" + menuDescription + "'>"
-                                + "<button type='button' class='form-control btn btn-danger' id='removeCategory'>Remove</button> "
-                                + "</div>"
-                                + "<div class='panel-body outerWrapper'>"
-                                + "<div class ='container-fluid containerWrapper'>"
-                                + "<div class='row-fluid'><div class='col-sm-3'>"
-                                + "<h4>Name</h4>"
-                                + "</div>"
-                                + "<div class='col-sm-2'>"
-                                + "<h4>Price</h4>"
-                                + "</div>"
-                                + "<div class='col-sm-5'>"
-                                + "<h4>Tags</h4>"
-                                + "</div>"
-                                + "<div class='col-sm-2'>"
-                                + "<h4>&nbsp;</h4"
-                                + "></div>"
-                                + "</div>");
-
-                        Set<Item> items = m.getItems();
-                        for (Item i : items) {
-                            i = Item.getItemByID(i.getId(), false, true);
-                            String itemName = "";
-                            double itemPrice = 0;
-                            if (i.getItemName() != null) {
-                                itemName = i.getItemName();
+                    if (submitted) {
+                        int truckId = Integer.parseInt(request.getParameter("truckName"));
+                        selected = Truck.getTruckByID(truckId);
+                        out.print("<h2>" + selected.getTruckName() + "</h2>");
+                        List<Menu> menu = selected.getMenus();
+                        for (Menu m : menu) {
+                            if (m == null) {
+                                continue;
                             }
-                            if (i.getPrice() != 0) {
-                                itemPrice = i.getPrice();
+                            String menuName = m.getMenuName();
+                            String menuDescription = "";
+
+                            if (m.getDescription() != null) {
+                                menuDescription = m.getDescription();
                             }
-                            out.print("<div class='row-fluid cloneWrapper'>"
-                                    +"<input type='hidden' name='itemId' value='" + i.getId() +"'>"
-                                    + "<div class='col-sm-3' id='itemName'>"
-                                    + "<input type='text' class='form-control' name='itemName' value='" + itemName + "'>"
+
+                            out.print("<div class='panel panel-default panelCloneWrapper'>"
+                                    + "<div class='panel-heading'>"
+                                    + "<input type='hidden' name='menuId' value='" + m.getId() + "'>"
+                                    + "<input type='text' class='form-control' name='categoryTitle' value='" + menuName + "'>"
+                                    + "<input type='text' class='form-control' name='categoryDescription' value='" + menuDescription + "'>"
+                                    + "<button type='button' class='form-control btn btn-danger' id='removeCategory'>Remove</button> "
                                     + "</div>"
-                                    + "<div class='col-sm-2' id='itemPrice'>"
-                                    + "<input type='text' class='form-control' name='itemPrice' value='" + itemPrice + "'>"
-                                    + "</div>"
-                                    + "<div class='col-sm-5' id='tags'>"
-                                    + "<textarea class='form-control' style='min-width: 100%; margin-bottom: 5px;' rows='1' name='tags'>");
-                            Set<Tag> tags = i.getTags();
-                            for (Tag t : tags) {
-                                out.println(t.getTagName() + ", ");
-                            }
-                            out.print("</textarea>"
+                                    + "<div class='panel-body outerWrapper'>"
+                                    + "<div class ='container-fluid containerWrapper'>"
+                                    + "<div class='row-fluid'><div class='col-sm-3'>"
+                                    + "<h4>Name</h4>"
                                     + "</div>"
                                     + "<div class='col-sm-2'>"
-                                    + "<button type='button' class='form-control btn btn-danger removeItem'>Remove</button>       "
+                                    + "<h4>Price</h4>"
+                                    + "</div>"
+                                    + "<div class='col-sm-5'>"
+                                    + "<h4>Tags</h4>"
+                                    + "</div>"
+                                    + "<div class='col-sm-2'>"
+                                    + "<h4>&nbsp;</h4"
+                                    + "></div>"
+                                    + "</div>");
+
+                            Set<Item> items = m.getItems();
+                            for (Item i : items) {
+                                i = Item.getItemByID(i.getId(), false, true);
+                                String itemName = "";
+                                double itemPrice = 0;
+                                if (i.getItemName() != null) {
+                                    itemName = i.getItemName();
+                                }
+                                if (i.getPrice() != 0) {
+                                    itemPrice = i.getPrice();
+                                }
+                                out.print("<div class='row-fluid cloneWrapper'>"
+                                        + "<input type='hidden' name='itemId' value='" + i.getId() + "'>"
+                                        + "<div class='col-sm-3' id='itemName'>"
+                                        + "<input type='text' class='form-control' name='itemName' value='" + itemName + "'>"
+                                        + "</div>"
+                                        + "<div class='col-sm-2' id='itemPrice'>"
+                                        + "<input type='text' class='form-control' name='itemPrice' value='" + itemPrice + "'>"
+                                        + "</div>"
+                                        + "<div class='col-sm-5' id='tags'>"
+                                        + "<textarea class='form-control' style='min-width: 100%; margin-bottom: 5px;' rows='1' name='tags'>");
+                                Set<Tag> tags = i.getTags();
+                                for (Tag t : tags) {
+                                    out.println(t.getTagName() + ", ");
+                                }
+                                out.print("</textarea>"
+                                        + "</div>"
+                                        + "<div class='col-sm-2'>"
+                                        + "<button type='button' class='form-control btn btn-danger removeItem'>Remove</button>       "
+                                        + "</div>"
+                                        + "</div>");
+                            }
+
+                            out.print("</div>"
+                                    + "<div class='row-fluid'>"
+                                    + "<div class='col-sm-2 col-sm-push-10'>"
+                                    + "<button type='button' class='btn btn-primary addItem'>New Item</button>"
+                                    + "</div>"
+                                    + "</div>"
                                     + "</div>"
                                     + "</div>");
+
                         }
-
-                        out.print("</div>"
-                                + "<div class='row-fluid'>"
-                                + "<div class='col-sm-2 col-sm-push-10'>"
-                                + "<button type='button' class='btn btn-primary addItem'>New Item</button>"
-                                + "</div>"
-                                + "</div>"
-                                + "</div>"
-                                + "</div>");
-
                     }
+
                 %>
             </div>
             <button type="button" class="btn btn-primary" id="addCategory">New Category</button>

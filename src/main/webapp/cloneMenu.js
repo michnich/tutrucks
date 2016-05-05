@@ -1,5 +1,5 @@
 $(".addItem").click(function () {
-    var $wrapper = $(this).closest('.outerWrapper').children('.containerWrapper');
+    var $wrapper = $(this).closest('.outerWrapper').children('.containerWrapper');    
     $('.cloneWrapper:first-child', $wrapper).clone(true).appendTo($wrapper).find('input').val('').focus();
 });
 

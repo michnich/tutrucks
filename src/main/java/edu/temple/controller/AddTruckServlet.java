@@ -47,28 +47,24 @@ public class AddTruckServlet extends HttpServlet {
         Time openTime = Time.valueOf(request.getParameter("open"));
         Time closeTime = Time.valueOf(request.getParameter("close"));
         String tagString = request.getParameter("tags");
-        List<String> tags = Arrays.asList(tagString.split("\\s*,\\s*"));
-        //check these value things
+        List<String> tags = Arrays.asList(tagString.split("\\s*,\\s*"));      
         Truck newTruck = new Truck();
         newTruck.setTruckName(truckName);
         newTruck.setLongitude(lng);
         newTruck.setLatitude(lat);
         newTruck.setOpeningTime(openTime);
         newTruck.setClosingTime(closeTime);
-        System.out.println("about to save truck " + truckName);
         newTruck.save();
-        //newTruck.loadTags();
         for (String s : tags) {
             Tag temp = Tag.retrieveTag(s, true);
-            //temp = temp.loadTaggedEntities();
             temp.addEntity(newTruck);
             newTruck.addTags(temp);
             temp.save();
         }
-        System.out.println("tryna print");
         try (PrintWriter out = response.getWriter()) {
             out.print("Truck added");
+        } catch (IOException ex) {
+
         }
-        System.out.println("should be done");
     }
 }

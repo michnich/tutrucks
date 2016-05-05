@@ -60,72 +60,54 @@ public class ItemTest {
         assertNotNull(itemSet);
         assertNotNull(tagList);
     }
-/*
-    @Test
-    public void testAddReview() {
-        when(review.getReviewed()).thenReturn(item);  
-        item.addReview(review);
-        System.out.println("Verifying review called getReviewed");
-        verify(review).getReviewed();
-        System.out.println("Verifying if condition was false");
-        assertEquals(true, review.getReviewed().equals(item));
-        System.out.println("Verifying that the review was added to the list");
-        assertEquals(item.getItemReviews().get(0), review);
-    }
     
     @Test
-    public void testAddReviewFailed() {
-        Item i = new Item();
-        i.setId(1);
-        when(review.getReviewed()).thenReturn(i);  
+    public void testAddReview() {
         item.addReview(review);
-        System.out.println("Verifying review called getReviewed");
-        verify(review).getReviewed();
-        System.out.println("Verifying if condition was true");
-        assertEquals(false, review.getReviewed().equals(item));
-        System.out.println("Verifying that the review was not added to the list");
-        assertNotEquals(item.getItemReviews().contains(review), review);        
+        System.out.println("Verifying review called setReviewed");
+        verify(review).setReviewed(item);
+        //System.out.println("Verifying if condition was false");
+        //assertEquals(true, review.getReviewed().equals(item));
+        //System.out.println("Verifying that the review was added to the list");
+        //assertEquals(item.getItemReviews().get(0), review);
     }
+    
 
    @Test
     public void testAddTagItemInTagSet() { 
         itemSet.add(item);
         when(tag.getItems()).thenReturn(itemSet);
         item.addTags(tag);
-        System.out.println("Verifying tag called get items");
-        verify(tag).getItems();
-        System.out.println("Verifying tag was added to item");
-        assertEquals(item.getTags().contains(tag), true);
+        //System.out.println("Verifying tag was added to item");
+        //assertEquals(item.getTags().contains(tag), true);
     }
     
     @Test
     public void testAddTagItemNotInTagSet() { 
         when(tag.getItems()).thenReturn(itemSet);
         item.addTags(tag);
-        System.out.println("Verifying tag called get items");
-        verify(tag).getItems();
         System.out.println("Verifying item added to tag");
         verify(tag).addEntity(item);
-        System.out.println("Verifying tag added the item");
-        assertEquals(item.getTags().contains(tag), true);
+        //System.out.println("Verifying tag added the item");
+        //assertEquals(item.getTags().contains(tag), true);
     }
     
     @Test
     public void testAddMultipleTags() { 
         itemSet.add(item);
-        for (int i = 0; i < tagList.size(); i++) {
+        /*for (int i = 0; i < tagList.size(); i++) {
             when(tagList.get(i).getItems()).thenReturn(itemSet);
-        }
+        }*/
         item.addTags(tagList.get(0), tagList.get(1), tagList.get(2), tagList.get(3), tagList.get(4));
-        System.out.println("Verifying all tags called get items");
+        System.out.println("Verifying all tags called add entity");
          for (int i = 0; i < tagList.size(); i++) {
-             verify(tagList.get(i)).getItems();
+             verify(tagList.get(i)).addEntity(item);
         }
-        System.out.println("Verifying all tags were added to item");
-        for (int i = 0; i < tagList.size(); i++) {
+        //System.out.println("Verifying all tags were added to item");
+        /*for (int i = 0; i < tagList.size(); i++) {
              assertTrue(item.getTags().contains(tagList.get(i)));
-        } 
-    } */
+        } */
+    }
     
     @Test
     public void testAddTagIntegration() {
